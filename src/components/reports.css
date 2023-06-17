@@ -1,0 +1,39 @@
+.rc-collapse-header-text {
+  width: 100% !important;
+}
+
+.rc-table {
+  overflow: scroll;
+}
+table {
+  width: 100% !important;
+  border-collapse: separate;
+  border-spacing: 0.3em;
+  color: #6c757d;
+}
+
+th {
+  background: #f6f6f7;
+  padding: 12px;
+  margin: 4px;
+  font-weight: bold;
+  text-align: left;
+  border-radius: 0.375rem;
+  border-width: 1px;
+}
+
+td {
+  background: #f6f6f7;
+  padding: 12px;
+  margin: 4px;
+  border-radius: 0.375rem;
+  border-width: 1px;
+}
+
+tr > td {
+  margin-bottom: 1em;
+}
+
+.text-red {
+  color: #ff073a;
+}
