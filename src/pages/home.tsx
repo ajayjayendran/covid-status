@@ -20,19 +20,15 @@ const Home: FC = () => {
     "Antarctic",
   ]
 
-  const { countries, getCountries } = useCountries("asia")
+  const { countries, getCountries } = useCountries("")
   const { reports } = useReports()
 
   const [reportsData, setReportsData] = useState<Report[]>([])
   const [worldReport, setWorldReport] = useState<Report | undefined>()
-  const [current, setCurrent] = useState<string>("Asia")
+  const [current, setCurrent] = useState<string>("")
 
   useEffect(() => {
-    if (countries.length > 0 && reports.length > 0) {
-      const data = reports.filter((item: any) => {
-        return countries.includes(item.Country_text)
-      })
-
+    if (reports.length > 0) {
       const world =
         reports.filter((item: any) => {
           return item.Country_text === "World"
@@ -42,7 +38,13 @@ const Home: FC = () => {
             })[0]
           : undefined
       setWorldReport(world)
-      setReportsData(data)
+      if (countries.length > 0) {
+        const data = reports.filter((item: any) => {
+          return countries.includes(item.Country_text)
+        })
+
+        setReportsData(data)
+      }
     }
   }, [reports, countries])
 
@@ -50,23 +52,25 @@ const Home: FC = () => {
     <>
       <div className="p-4 py-9">
         <div className="text-2xl font-bold">Coronavirus (COVID-19) Status</div>
-        {worldReport && (
-          <div className="mt-2 text-[#6c757d]">
-            Globally, as of{" "}
-            <span className="text-[#28a745] font-bold">
-              {moment(worldReport.LastUpdate).format("LLLL")}
-            </span>
-            , there have been{" "}
-            <span className="text-[#017bfe] font-bold">
-              {worldReport.TotalCases_text}
-            </span>{" "}
-            confirmed cases of COVID-19, including{" "}
-            <span className="text-red font-bold">
-              {worldReport.TotalDeaths_text}
-            </span>{" "}
-            deaths, reported to WHO.
-          </div>
-        )}
+        {worldReport &&
+          worldReport.LastUpdate &&
+          worldReport.LastUpdate !== "" && (
+            <div className="mt-2 text-[#6c757d]">
+              Globally, as of{" "}
+              <span className="text-[#28a745] font-bold">
+                {moment(worldReport.LastUpdate).format("LLLL")}
+              </span>
+              , there have been{" "}
+              <span className="text-[#017bfe] font-bold">
+                {worldReport.TotalCases_text}
+              </span>{" "}
+              confirmed cases of COVID-19, including{" "}
+              <span className="text-red font-bold">
+                {worldReport.TotalDeaths_text}
+              </span>{" "}
+              deaths, reported to WHO.
+            </div>
+          )}
         <div className="text-sm font-bold mt-2 flex gap-2 items-center text-[#6c757d]">
           Last update :- {worldReport?.LastUpdate} <MdOutlineUpdate />
         </div>
@@ -111,7 +115,6 @@ const Home: FC = () => {
                   ),
                 },
               ]}
-              accordion={false}
             ></Collapse>
           )
         })}
